@@ -31,25 +31,25 @@ public class DataLoaderService implements CommandLineRunner{
     }
     @Override
     public	void	run(String...	args)	throws	Exception	{
-        //	Agar	data	pehle	se	load	hai,	to	dobara	load	mat	karo	(restart	karne	par	duplicate	na	ho)
+
         if	(stockPriceRepository.count()	>	0)	{
-            System.out.println("Stock	price	data	pehle	se	load	hai.	Dobara	load	nahi	kar	raha.");
+            System.out.println("Stock	price	data already loaded. It can't load again.");
             return;
         }
         File	folder	=	new	File(marketDataFolder);
         if	(!folder.exists()	||	!folder.isDirectory())	{
-            System.out.println("Market	data	folder	nahi	mila:	"	+	folder.getAbsolutePath());
-            System.out.println("Pehle	DataGenerator.java	ko	run	karo!");
+            System.out.println("Can't found Market data folder :	"	+	folder.getAbsolutePath());
+            System.out.println("First run DataGenerator.java!");
             return;
         }
         File[]	csvFiles	=	folder.listFiles((dir,	name)	->	name.toLowerCase().endsWith(".csv"));
         if	(csvFiles	==	null	||	csvFiles.length	==	0)	{
-            System.out.println("Koi	CSV	file	nahi	mili	folder	me:	"	+	folder.getAbsolutePath());
+            System.out.println("Can't found	CSV	file in folder:	"	+	folder.getAbsolutePath());
             return;
         }
         Map<String,	Stock>	stockCache	=	new	HashMap<>();
         for	(File	file	:	csvFiles)	{
-            //	File	ka	naam	(bina	.csv	ke)	hi	stock	symbol	hoga,	jaise	"TCS.csv"	->	"TCS"
+
             String	symbol	=	file.getName().replace(".csv",	"").toUpperCase();
             Stock	stock	=	stockCache.get(symbol);
             if	(stock	==	null)	{
@@ -78,9 +78,9 @@ public class DataLoaderService implements CommandLineRunner{
                     stockPriceRepository.save(stockPrice);
                     count++;
                 }
-                System.out.println(symbol	+	"	ke	liye	"	+	count	+	"	price	rows	load	ho	gayi.");
+                System.out.println(count	+	"price for the "	+	symbol	+	" has been loaded in the row.");
             }
         }
-        System.out.println("Market	data	database	me	load	ho	gaya!");
+        System.out.println("Market	data has been loaded into the database!");
     }
 }

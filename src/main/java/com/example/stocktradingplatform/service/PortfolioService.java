@@ -25,7 +25,7 @@ public class PortfolioService {
     }
     private	AppUser	getDefaultUser()	{
         return	appUserRepository.findAll().stream().findFirst()
-                .orElseThrow(()	->	new	RuntimeException("Default	user	nahi	mila"));
+                .orElseThrow(()	->	new	RuntimeException("Not found default	user"));
     }
     public	Double	getVirtualBalance()	{
         return	getDefaultUser().getVirtualBalance();

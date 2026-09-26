@@ -23,7 +23,7 @@ public class UserInitializerService implements CommandLineRunner {
         if	(appUserRepository.count()	==	0)	{
             AppUser	user	=	new	AppUser("Demo	Trader",	initialBalance);
             appUserRepository.save(user);
-            System.out.println("Default	user	'Demo	Trader'	ban	gaya.	Virtual	Balance:	"	+	initialBalance);
+            System.out.println("Default	user became 'Demo	Trader'.	Virtual	Balance:	"	+	initialBalance);
         }
     }
 }

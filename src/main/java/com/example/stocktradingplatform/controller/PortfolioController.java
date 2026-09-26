@@ -11,25 +11,23 @@ import	java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins	=	"*")
+@CrossOrigin(origins = "*")
 public class PortfolioController {
 
-    private	final	PortfolioService	portfolioService;
-    private	final	TransactionRepository	transactionRepository;
-    private	final	AppUserRepository	appUserRepository;
-    public	PortfolioController(PortfolioService	portfolioService,
-                                  TransactionRepository	transactionRepository,
-                                  AppUserRepository	appUserRepository)	{
+    private	final PortfolioService	portfolioService;
+    private	final TransactionRepository	transactionRepository;
+    private	final AppUserRepository	appUserRepository;
+    public	PortfolioController(PortfolioService	portfolioService, TransactionRepository	transactionRepository, AppUserRepository appUserRepository)	{
         this.portfolioService	=	portfolioService;
         this.transactionRepository	=	transactionRepository;
         this.appUserRepository	=	appUserRepository;
     }
-    //	GET	http://localhost:8080/api/portfolio
+
     @GetMapping("/portfolio")
     public	List<HoldingResponse>	getPortfolio()	{
         return	portfolioService.getPortfolio();
     }
-    //	GET	http://localhost:8080/api/balance
+
     @GetMapping("/balance")
     public	Map<String,	Double>	getBalance()	{
         return	Map.of(
@@ -37,7 +35,7 @@ public class PortfolioController {
                 "totalProfitLoss",	portfolioService.getTotalProfitLoss()
         );
     }
-    //	GET	http://localhost:8080/api/transactions
+
     @GetMapping("/transactions")
     public	List<Transaction>	getTransactions()	{
         return	transactionRepository.findByUserOrderByTransactionDateTimeDesc(

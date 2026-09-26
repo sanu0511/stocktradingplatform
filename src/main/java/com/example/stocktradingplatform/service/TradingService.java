@@ -25,12 +25,12 @@ public class TradingService {
 
     private	AppUser	getDefaultUser()	{
         return	appUserRepository.findAll().stream().findFirst()
-                .orElseThrow(()	->	new	RuntimeException("Default	user	nahi	mila"));
+                .orElseThrow(()	->	new	RuntimeException("Default	user	not found!"));
     }
     @Transactional
     public	String	buyStock(Long	stockId,	Integer	quantity,	LocalDateTime	dateTime)	{
         if	(quantity	==	null	||	quantity	<=	0)	{
-            throw	new	RuntimeException("Quantity	0	se	zyada	honi	chahiye");
+            throw	new	RuntimeException("Quantity	shouldn't more than 0");
         }
         AppUser	user	=	getDefaultUser();
         Stock	stock	=	stockPriceService.getStockById(stockId);
@@ -38,7 +38,7 @@ public class TradingService {
         double	price	=	priceAtTime.getPrice();
         double	totalCost	=	price	*	quantity;
         if	(user.getVirtualBalance()	<	totalCost)	{
-            throw	new	RuntimeException("Itna	paisa	nahi	hai	aapke	virtual	balance	me");
+            throw	new	RuntimeException("You don't have that much money in your virtual balance!");
         }
 
         user.setVirtualBalance(user.getVirtualBalance()	-	totalCost);
@@ -58,20 +58,20 @@ public class TradingService {
         //	Transaction	history	me	record	daalo
         Transaction	transaction	=	new	Transaction(user,	stock,	"BUY",	quantity,	price,	dateTime);
         transactionRepository.save(transaction);
-        return	"Aapne	"	+	quantity	+	"	shares	"	+	stock.getSymbol()	+	"	ke	khareede,	price	Rs."	+	price	+	"	each.";
+        return	"You bought the "	+	quantity	+	" of shares	"	+	stock.getSymbol()	+	",	price	Rs."	+	price	+	" of each.";
     }
     @Transactional
     public	String	sellStock(Long	stockId,	Integer	quantity,	LocalDateTime	dateTime)	{
         if	(quantity	==	null	||	quantity	<=	0)	{
-            throw	new	RuntimeException("Quantity	0	se	zyada	honi	chahiye");
+            throw	new	RuntimeException("Quantity	must be greater than 0");
         }
         AppUser	user	=	getDefaultUser();
         Stock	stock	=	stockPriceService.getStockById(stockId);
         Holding	holding	=	holdingRepository.findByUserAndStock(user,	stock)
-                .orElseThrow(()	->	new	RuntimeException("Aapke	paas	is	stock	ke	shares	hain	hi	nahi"));
+                .orElseThrow(()	->	new	RuntimeException("You don't have stock of this share"));
         if	(holding.getQuantity()	<	quantity)	{
-            throw	new	RuntimeException("Aapke	paas	sirf	"	+	holding.getQuantity()
-                    +	"	shares	hain,	"	+	quantity	+	"	nahi	bech	sakte");
+            throw	new	RuntimeException("You have only "	+	holding.getQuantity()
+                    +	"	shares,	"	+	quantity	+	"	can't sell");
         }
         StockPrice	priceAtTime	=	stockPriceService.getPriceAt(stockId,	dateTime);
         double	price	=	priceAtTime.getPrice();
@@ -90,6 +90,6 @@ public class TradingService {
 
         Transaction	transaction	=	new	Transaction(user,	stock,	"SELL",	quantity,	price,	dateTime);
         transactionRepository.save(transaction);
-        return	"Aapne	"	+	quantity	+	"	shares	"	+	stock.getSymbol()	+	"	ke	beche,	price	Rs."	+	price	+	"	each.";
+        return	"You sold "	+	quantity	+	"	shares	"	+	stock.getSymbol()	+	",	price	Rs."	+	price	+	"	each.";
     }
         }

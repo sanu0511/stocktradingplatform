@@ -16,7 +16,7 @@ public class TradingController {
     public	TradingController(TradingService	tradingService)	{
         this.tradingService	=	tradingService;
     }
-    //	POST	http://localhost:8080/api/trade/buy
+
     @PostMapping("/buy")
     public	ResponseEntity<?>	buy(@RequestBody	BuySellRequest	request)	{
         try	{
@@ -27,7 +27,7 @@ public class TradingController {
             return	ResponseEntity.badRequest().body(Map.of("error",	e.getMessage()));
         }
     }
-    //	POST	http://localhost:8080/api/trade/sell
+
     @PostMapping("/sell")
     public	ResponseEntity<?>	sell(@RequestBody	BuySellRequest	request)	{
         try	{

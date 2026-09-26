@@ -9,17 +9,17 @@ import	java.util.Random;
 
 public class DataGenerator {
 
-        //	10	stocks	ke	dummy	symbols
+
         private	static	final	String[]	SYMBOLS	=	{
                 "TCS",	"INFY",	"RELI",	"HDFC",	"ICICI",
                 "WIPRO",	"SBIN",	"ITC",	"TATAM",	"MARUTI"
         };
-        //	Har	stock	ki	shuruwati	(starting)	price
+
         private	static	final	double[]	START_PRICES	=	{
                 3500,	1500,	2800,	1650,	1050,
                 420,	610,	440,	780,	11200
         };
-        //	Kitne	trading	days	ka	data	chahiye	(Saturday/Sunday	chhod	kar)
+
         private	static	final	int	TRADING_DAYS	=	15;
         public	static	void	main(String[]	args)	throws	IOException	{
             File	folder	=	new	File("market-data");
@@ -61,7 +61,7 @@ public class DataGenerator {
                 System.out.println("Generated	data	for	"	+	symbol	+	"	->	"	+	file.getPath());
             }
             System.out.println();
-            System.out.println("Sabhi	CSV	files	'market-data'	folder	ke	andar	ban	chuki	hain!");
-            System.out.println("Ab	StockTradingPlatformApplication.java	ko	run	karo.");
+            System.out.println("Every	CSV	files is created inside 'market-data' folder!");
+            System.out.println("Now run StockTradingPlatformApplication.java.");
         }
 }

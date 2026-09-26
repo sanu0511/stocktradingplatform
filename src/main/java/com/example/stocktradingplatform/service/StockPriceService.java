@@ -22,7 +22,7 @@ public class StockPriceService {
     }
     public	Stock	getStockById(Long	id)	{
         return	stockRepository.findById(id)
-                .orElseThrow(()	->	new	RuntimeException("Stock	nahi	mila,	id:	"	+	id));
+                .orElseThrow(()	->	new	RuntimeException("Not found Stock,	id:	"	+	id));
     }
 
     public	StockPrice	getPriceAt(Long	stockId,	LocalDateTime	dateTime)	{
@@ -30,13 +30,13 @@ public class StockPriceService {
         return	stockPriceRepository
                 .findFirstByStockAndPriceDateTimeLessThanEqualOrderByPriceDateTimeDesc(stock,	dateTime)
                 .orElseThrow(()	->	new	RuntimeException(
-                        "Is	date/time	se	pehle	is	stock	ka	koi	price	data	available	nahi	hai"));
+                        "No price data is available for this stock before this date/time!"));
     }
 
     public	StockPrice	getLatestPrice(Long	stockId)	{
         Stock	stock	=	getStockById(stockId);
         return	stockPriceRepository.findFirstByStockOrderByPriceDateTimeDesc(stock)
-                .orElseThrow(()	->	new	RuntimeException("Is	stock	ka	koi	price	data	nahi	mila"));
+                .orElseThrow(()	->	new	RuntimeException("No price data found for this stock!"));
     }
     public	List<StockPrice>	getFullHistory(Long	stockId)	{
         Stock	stock	=	getStockById(stockId);
